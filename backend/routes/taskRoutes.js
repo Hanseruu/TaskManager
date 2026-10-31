@@ -1,10 +1,12 @@
 import express from 'express'
-import {deleteTask, moveTask} from '../controllers/taskController.js'
-
+import { createTask, deleteTask, moveTask } from "../controllers/taskController.js";
+import { authMiddleware } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.delete('/:id', deleteTask)
-router.patch('/:id/move',  moveTask);
 
-export default router
+router.post("/", authMiddleware, createTask);
+router.delete('/:id', authMiddleware, deleteTask);
+router.patch('/:id/move', authMiddleware, moveTask);
+
+export default router;
