@@ -11,4 +11,5 @@ router.get('/:id', authMiddleware, getBoardId);
 router.post('/', authMiddleware, createBoard);
 router.delete('/:id', authMiddleware, deleteBoard);
 router.put('/:id', authMiddleware, updateBoard);
+
 export default router;

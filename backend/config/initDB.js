@@ -17,6 +17,12 @@
             created_at TIMESTAMP default CURRENT_TIMESTAMP
         )
         `;
+        await sql`CREATE TABLE IF NOT EXISTS lists (
+            id SERIAL PRIMARY KEY,
+            name VARCHAR (255) NOT NULL,
+            board_id INT REFERENCES boards(id) ON DELETE CASCADE NOT NULL,
+            created_at TIMESTAMP default CURRENT_TIMESTAMP
+        )`
         console.log("Db initialized successfully.")
         } catch (error) {
         console.log("Error initializing database", error)
