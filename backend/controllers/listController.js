@@ -32,7 +32,11 @@ export const createList = async (req, res) => {
                         const list = await sql`INSERT INTO lists (name, board_id)
                                    VALUES (${correctName}, ${id}) 
                                    RETURNING *`
-                        return res.status(201).json({success: true, data: list[0] })
+                        if (list.length === 0) {
+                                res.status(400).json({success: false, message: "Error creating the list"});
+                        } else {
+                                return res.status(201).json({success: true, data: list[0] })
+                        }
                 }
                 return res.status(404).json({success: false, message: "Not exist"});
         } catch (err) {
