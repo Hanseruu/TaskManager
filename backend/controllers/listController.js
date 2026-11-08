@@ -81,7 +81,7 @@ export const updateList = async (req,  res) => {
                           RETURNING lists.*
                           `
 
-                return res.status(200).json({success: true, data: updateList[0]})
+                return res.status(200).json({success: true, data: updatedList[0]})
         } catch (err) {
                 console.log("Error", err);
                 return res.status(500).json({success: false, message: "Internal Error Server"});
