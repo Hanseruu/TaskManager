@@ -46,8 +46,21 @@ export const createList = async (req, res) => {
 }
 
 export const deleteList = async (req, res) => {
-        res.status(200).json({message: "list deleted"});
+        
+        const {id} = req.params
 
+        try {
+                const deletedList = await sql`DELETE FROM lists USING boards WHERE lists.board_id = boards.id AND lists.id = ${id} AND boards.created_by = ${req.user.id} RETURNING lists.*`;
+
+                if (deletedList.length === 0) {
+                        return res.status(404).json({success: false, message: "not found"});
+                }
+                        return res.status(200).json({success: true, data: deletedList[0]});
+
+        } catch (err) {
+                console.log("Error", err);
+                return res.status(500).json({success: false, message: "Internal Server Error"})
+        }
 }
 
 export const updateList = async (req,  res) => {
