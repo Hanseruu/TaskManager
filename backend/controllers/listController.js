@@ -64,5 +64,26 @@ export const deleteList = async (req, res) => {
 }
 
 export const updateList = async (req,  res) => {
-    res.status(200).json({message: "updated"});
+        const {id} = req.params
+        const {name} = req.body
+
+        if (!name) { 
+                return res.status(400).json({success: false, message: "Please enter a valid name"})
+        }
+
+        try {
+               const updatedList = await sql`UPDATE lists 
+                          SET name = ${name}
+                          FROM boards
+                          WHERE lists.board_id = boards.id
+                          AND lists.id = ${id} 
+                          AND boards.created_by = ${req.user.id}
+                          RETURNING lists.*
+                          `
+
+                return res.status(200).json({success: true, data: updateList[0]})
+        } catch (err) {
+                console.log("Error", err);
+                return res.status(500).json({success: false, message: "Internal Error Server"});
+        }
 }
